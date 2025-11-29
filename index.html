@@ -7,7 +7,8 @@
 <body>
 <h2>Extract FIRST COLUMN Numbers From ALL Blocks (Merged PDF)</h2>
 <input type="file" id="pdfFile" accept="application/pdf">
-<pre id="output"></pre>
+<button id="copyBtn">Copy All</button>
+<pre id="output" style="white-space: pre-wrap;"></pre>
 
 <script>
 document.getElementById("pdfFile").addEventListener("change", async function (e) {
@@ -19,7 +20,6 @@ document.getElementById("pdfFile").addEventListener("change", async function (e)
 
     let items = [];
 
-    // Read all text items with coordinates
     for (let p = 1; p <= pdf.numPages; p++) {
         let page = await pdf.getPage(p);
         let text = await page.getTextContent();
@@ -73,9 +73,21 @@ document.getElementById("pdfFile").addEventListener("change", async function (e)
         }
     }
 
-    // FINAL OUTPUT WITH ONLY COMMA (NO SPACE)
+    // FINAL OUTPUT: ONLY COMMA, NO SPACE
     document.getElementById("output").textContent =
         finalData.join(",");
+});
+
+// COPY BUTTON FUNCTION
+document.getElementById("copyBtn").addEventListener("click", function() {
+    const output = document.getElementById("output").textContent;
+    if (!output) return;
+    
+    navigator.clipboard.writeText(output).then(() => {
+        alert("Copied to clipboard!");
+    }).catch(err => {
+        alert("Failed to copy: " + err);
+    });
 });
 </script>
 </body>
