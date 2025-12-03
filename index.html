@@ -51,6 +51,7 @@
             border: none;
             padding: 12px 28px;
             margin-top: 15px;
+            margin-right: 10px;
             cursor: pointer;
             font-size: 17px;
             border-radius: 10px;
@@ -69,15 +70,20 @@
         }
 
         pre {
-            text-align: left;
-            background: rgba(255,255,255,0.2);
-            padding: 15px;
-            border-radius: 8px;
-            max-height: 350px;
-            overflow: auto;
-            border: 1px solid rgba(255,255,255,0.4);
-            color: #000;
+            display: none; /* Hidden, used only for copying */
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.9);
+            color: black;
             font-weight: bold;
+        }
+
+        table td {
+            padding: 5px 12px;
+            border: 1px solid #000;
         }
     </style>
 </head>
@@ -92,8 +98,10 @@
     <input type="file" id="pdfFile" accept="application/pdf" multiple>
     <br>
     <button id="copyBtn">Copy All</button>
+    <button id="clearBtn">Clear</button>
 
-    <pre id="output" style="white-space: pre-wrap;"></pre>
+    <pre id="output"></pre> <!-- Hidden for copy -->
+    <div id="tableOutput"></div> <!-- Display table here -->
 </div>
 
 <script>
@@ -157,6 +165,20 @@ document.getElementById("pdfFile").addEventListener("change", async function (e)
         }
     }
 
+    // Display as table with 1 number per row
+    const tableOutput = document.getElementById("tableOutput");
+    if(finalData.length > 0){
+        let tableHTML = "<table>";
+        finalData.forEach(val => {
+            tableHTML += `<tr><td>${val}</td></tr>`;
+        });
+        tableHTML += "</table>";
+        tableOutput.innerHTML = tableHTML;
+    } else {
+        tableOutput.innerHTML = "<p>No data found!</p>";
+    }
+
+    // Store comma-separated for copying
     document.getElementById("output").textContent = finalData.join(",");
 });
 
@@ -169,6 +191,13 @@ document.getElementById("copyBtn").addEventListener("click", function() {
     }).catch(err => {
         alert("Failed to copy: " + err);
     });
+});
+
+// Clear button functionality
+document.getElementById("clearBtn").addEventListener("click", function() {
+    document.getElementById("pdfFile").value = "";  // Reset file input
+    document.getElementById("tableOutput").innerHTML = "";  // Remove table
+    document.getElementById("output").textContent = "";      // Clear hidden copy
 });
 </script>
 
