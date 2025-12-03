@@ -3,12 +3,98 @@
 <head>
     <title>Extract All Khasra Blocks (Multiple PDFs)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #d10000, #0047b3);
+            padding: 40px;
+            text-align: center;
+            color: white;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(0,0,0,0.4);
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            color: #ffebeb;
+            font-size: 24px;
+            text-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+
+        .card {
+            background: rgba(255,255,255,0.15);
+            width: 75%;
+            margin: auto;
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.35);
+        }
+
+        h3 {
+            color: #ffe1e1;
+            font-size: 22px;
+        }
+
+        button {
+            background: linear-gradient(90deg, #d10000, #0047b3);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 17px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #ff0000, #0a63ff);
+            transform: scale(1.05);
+        }
+
+        input {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        pre {
+            text-align: left;
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 350px;
+            overflow: auto;
+            border: 1px solid rgba(255,255,255,0.4);
+            color: #000;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<h2>Extract FIRST COLUMN Numbers From All Blocks (Multiple PDFs)</h2>
-<input type="file" id="pdfFile" accept="application/pdf" multiple>
-<button id="copyBtn">Copy All</button>
-<pre id="output" style="white-space: pre-wrap;"></pre>
+
+<h1>LAKSHYA PROJECT MANAGEMENT</h1>
+<h2>JAMABANDI TOOL</h2>
+
+<div class="card">
+    <h3>GET KHASRA DETAILS</h3>
+
+    <input type="file" id="pdfFile" accept="application/pdf" multiple>
+    <br>
+    <button id="copyBtn">Copy All</button>
+
+    <pre id="output" style="white-space: pre-wrap;"></pre>
+</div>
 
 <script>
 document.getElementById("pdfFile").addEventListener("change", async function (e) {
@@ -59,7 +145,7 @@ document.getElementById("pdfFile").addEventListener("change", async function (e)
             if (block.length === 0) continue;
 
             let minX = Math.min(...block.map(i => i.x));
-            let firstCol = block.filter(i => Math.abs(i.x - minX) < 6);
+            let firstCol = block.filter(i => Math.abs(i.x - minX) < 3);
 
             let nums = firstCol
                 .map(i => i.str)
@@ -74,7 +160,6 @@ document.getElementById("pdfFile").addEventListener("change", async function (e)
     document.getElementById("output").textContent = finalData.join(",");
 });
 
-// COPY BUTTON FUNCTION
 document.getElementById("copyBtn").addEventListener("click", function() {
     const output = document.getElementById("output").textContent;
     if (!output) return;
@@ -86,5 +171,6 @@ document.getElementById("copyBtn").addEventListener("click", function() {
     });
 });
 </script>
+
 </body>
 </html>
